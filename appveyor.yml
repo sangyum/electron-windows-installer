@@ -6,7 +6,7 @@ environment:
 
 cache:
   - node_modules -> package.json
-  - %APPDATA%\npm-cache
+  - "%APPDATA%\\npm-cache"
 
 install:
   - ps: Install-Product node $env:nodejs_version
