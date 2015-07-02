@@ -19,7 +19,7 @@ brew install wine winetricks
 winetricks dotnet40
 ```
 
-**Note:** I can't get Squirrel to work with `wine`. I created an issue on the Squirrel.Windows repo.
+**Note:** I can't get Squirrel to work with `wine`. I created an [issue on the Squirrel.Windows repo](https://github.com/Squirrel/Squirrel.Windows/issues/378).
 
 ## Usage
 
