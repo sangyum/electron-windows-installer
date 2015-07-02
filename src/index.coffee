@@ -17,12 +17,12 @@ class InstallerFactory
     @authors = opts.authors || appMetadata.author || ''
     @owners = opts.owners || @authors
     @name = appMetadata.name
+    @productName = appMetadata.productName || @name
     @exe = opts.exe || @name + '.exe'
     @setupExe = opts.setupExe || @productName + 'Setup.exe'
     @iconUrl = opts.iconUrl || ''
     @description = opts.description || appMetadata.description || ''
     @version = opts.version || appMetadata.version || ''
-    @productName = appMetadata.productName || @name
     @title = opts.title || @productName || @name
     @certificateFile = opts.certificateFile
     @certificatePassword = opts.certificatePassword

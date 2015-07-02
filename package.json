@@ -23,7 +23,7 @@
   "scripts": {
     "build": "coffee -c -b -o dist src",
     "pretest": "npm run build",
-    "test": "mocha -t 300000 --compilers coffee:coffee-script/register"
+    "test": "mocha -t 120000 --compilers coffee:coffee-script/register"
   },
   "dependencies": {
     "asar": "^0.7.2",

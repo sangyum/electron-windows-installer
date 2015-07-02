@@ -15,9 +15,14 @@ describe 'create-windows-installer task', ->
       authors: 'GitHub Inc.'
       version: '1.0.0'
       iconUrl: 'https://raw.githubusercontent.com/Aluxian/electron-installer/master/resources/icon.png'
-    .then ->
-      assert.equal true, fs.existsSync('./test/fixtures/app/Update.exe')
-      assert.equal true, fs.existsSync('./build/electron-1.0.0-full.nupkg')
-      assert.equal true, fs.existsSync('./build/ElectronSetup.exe')
+    .then new Promise (resolve, reject) ->
+      interval = setInterval ->
+        if fs.existsSync('./build/ElectronSetup.exe')
+          clearInterval interval
+          assert.equal true, fs.existsSync('./test/fixtures/app/Update.exe')
+          assert.equal true, fs.existsSync('./build/electron-1.0.0-full.nupkg')
+          assert.equal true, fs.existsSync('./build/ElectronSetup.exe')
+          resolve()
+      , 15 * 1000
     .then done
     .catch done
