@@ -16,7 +16,7 @@ describe 'create-windows-installer task', ->
       description: 'Default app.'
       authors: 'GitHub Inc.'
       version: '1.0.0'
-      iconUrl: 'https://raw.githubusercontent.com/Aluxian/electron-installer/master/resources/icon.png'
+      iconUrl: 'https://raw.githubusercontent.com/Aluxian/electron-windows-installer/master/resources/icon.png'
     .then new Promise (resolve, reject) ->
       interval = setInterval ->
         if fs.existsSync('./build/ElectronSetup.exe')

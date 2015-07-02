@@ -1,15 +1,15 @@
-# Electron Installer
+# Electron Windows Installer
 
-[![Build status](https://ci.appveyor.com/api/projects/status/q48wvyqgsho4pjos/branch/master?svg=true)](https://ci.appveyor.com/project/Aluxian/electron-installer/branch/master)
+[![Build status](https://ci.appveyor.com/api/projects/status/q1i12hq89i73c4ud/branch/master?svg=true)](https://ci.appveyor.com/project/Aluxian/electron-windows-installer/branch/master)
 
-Build Windows installers for [Electron](https://github.com/atom/electron) apps using [Squirrel](https://github.com/Squirrel/Squirrel.Windows).
+Build Windows installers for [Electron](https://github.com/atom/electron) apps using [Squirrel.Windows](https://github.com/Squirrel/Squirrel.Windows).
 
 ## Installation
 
-[![NPM](https://nodei.co/npm/electron-installer.png)](https://nodei.co/npm/electron-installer/)
+[![NPM](https://nodei.co/npm/electron-windows-installer.png)](https://nodei.co/npm/electron-windows-installer/)
 
 ```sh
-npm install --save-dev electron-installer
+npm install --save-dev electron-windows-installer
 ```
 
 If you're not on Windows, you'll need `wine`, `winetricks` and `.NET 4`. Quick install on OS X:
@@ -19,24 +19,26 @@ brew install wine winetricks
 winetricks dotnet40
 ```
 
+**Note:** I can't get Squirrel to work with `wine`. I created an issue on the Squirrel.Windows repo.
+
 ## Usage
 
 Assuming you have an Electron app built at the given `appDirectory`, you can configure a Gulp task like so:
 
 ```js
 var gulp = require('gulp');
-var electronInstaller = require('electron-installer');
+var winInstaller = require('electron-windows-installer');
 
 gulp.task('create-windows-installer', function(done) {
-  electronInstaller({
+  winInstaller({
     appDirectory: './build/win32',
-    outputDirectory: './release',
-    exe: 'app.exe'
+    outputDirectory: './release'
   }).then(done).catch(done);
 });
 ```
 
 Then run `gulp create-windows-installer` and you will have a `.nupkg`, a `RELEASES` file, and a `.exe` installer file in the `outputDirectory` folder.
+Look at the test for inspiration.
 
 There are several configuration settings supported:
 
@@ -65,7 +67,7 @@ For development / internal use, creating installers without a signature is okay,
 
 Any certificate valid for "Authenticode Code Signing" will work here, but if you get the right kind of code certificate, you can also opt-in to [Windows Error Reporting](http://en.wikipedia.org/wiki/Windows_Error_Reporting). [This MSDN page](http://msdn.microsoft.com/en-us/library/windows/hardware/hh801887.aspx) has the latest links on where to get a WER-compatible certificate. The "Standard Code Signing" certificate is sufficient for this purpose.
 
-## Handling Squirrel Events
+## Handling Squirrel Events (for [Squirrel Aware](https://github.com/Squirrel/Squirrel.Windows/blob/master/docs/squirrel-events.md) apps)
 
 Squirrel will spawn your app with command line flags on first run, updates, and uninstalls.
 It is **very** important that your app handle these events as _early_ as possible, and quit **immediately** after handling them.

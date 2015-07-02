@@ -1,9 +1,10 @@
 {
-  "name": "electron-installer",
+  "name": "electron-windows-installer",
   "version": "0.33.0",
   "description": "Build Windows installers for Electron apps using Squirrel. Works with Gulp!",
   "main": "./dist/index.js",
   "license": "MIT",
+  "author": "Alexandru Rosianu <me@aluxian.com>",
   "keywords": [
     "electron",
     "atom-shell",
@@ -15,10 +16,10 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/Aluxian/electron-installer.git"
+    "url": "https://github.com/Aluxian/electron-windows-installer.git"
   },
   "bugs": {
-    "url": "https://github.com/Aluxian/electron-installer/issues"
+    "url": "https://github.com/Aluxian/electron-windows-installer/issues"
   },
   "scripts": {
     "build": "coffee -c -b -o dist src",
