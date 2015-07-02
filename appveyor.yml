@@ -19,16 +19,16 @@ test_script:
   - npm --version
   - npm test
 
-artifacts:
-  - path: build\*
-
-deploy:
-  - provider: GitHub
-    auth_token:
-      secure: 5HXfg0QXRwPIx6Hjad37cMQvzBXXGnlX31Wnq+S7gFQw5cR9QV8BlgwWlFfuHuu2
-    artifact: build\*
-    draft: true
-    prerelease: false
-    on:
-      branch: master
-      appveyor_repo_tag: true
+# artifacts:
+#   - path: build\*
+#
+# deploy:
+#   - provider: GitHub
+#     auth_token:
+#       secure: 5HXfg0QXRwPIx6Hjad37cMQvzBXXGnlX31Wnq+S7gFQw5cR9QV8BlgwWlFfuHuu2
+#     artifact: build\*
+#     draft: true
+#     prerelease: false
+#     on:
+#       branch: master
+#       appveyor_repo_tag: true
