@@ -1,5 +1,7 @@
 fs = require 'fs'
 assert = require 'assert'
+
+Promise = require 'bluebird'
 electronInstaller = require '../dist'
 
 describe 'create-windows-installer task', ->
