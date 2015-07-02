@@ -1,39 +1,42 @@
-# Electron Installer Grunt Plugin
+# Electron Installer
 
-[![Build status](https://ci.appveyor.com/api/projects/status/yd1ybqg3eq397i26/branch/master?svg=true)](https://ci.appveyor.com/project/kevinsawicki/grunt-electron-installer/branch/master)
+[![Build status](https://ci.appveyor.com/api/projects/status/q48wvyqgsho4pjos/branch/master?svg=true)](https://ci.appveyor.com/project/Aluxian/electron-installer/branch/master)
 
-Grunt plugin that builds Windows installers for
-[Electron](https://github.com/atom/electron) apps using
-[Squirrel](https://github.com/Squirrel/Squirrel.Windows).
+Build Windows installers for [Electron](https://github.com/atom/electron) apps using [Squirrel](https://github.com/Squirrel/Squirrel.Windows).
 
-## Installing
+## Installation
+
+[![NPM](https://nodei.co/npm/electron-installer.png)](https://nodei.co/npm/electron-installer/)
 
 ```sh
-npm install --save-dev grunt-electron-installer
+npm install --save-dev electron-installer
 ```
 
-## Configuring
+If you're not on Windows, you'll need `wine`, `winetricks` and `.NET 4`. Quick install on OS X:
 
-In your `Gruntfile.coffee` or `Gruntfile.js` add the following:
+```sh
+brew install wine winetricks
+winetricks dotnet40
+```
+
+## Usage
+
+Assuming you have an Electron app built at the given `appDirectory`, you can configure a Gulp task like so:
 
 ```js
-grunt.loadNpmTasks('grunt-electron-installer')
+var gulp = require('gulp');
+var electronInstaller = require('electron-installer');
+
+gulp.task('create-windows-installer', function(done) {
+  electronInstaller({
+    appDirectory: './build/win32',
+    outputDirectory: './release',
+    exe: 'app.exe'
+  }).then(done).catch(done);
+});
 ```
 
-Then assuming you have an Electron app built at the given `appDirectory`,
-you can configure the installer task like so:
-
-```js
-'create-windows-installer': {
-  appDirectory: '/tmp/build/my-app',
-  outputDirectory: '/tmp/build/installer',
-  authors: 'My App Inc.',
-  exe: 'myapp.exe'
-}
-```
-
-Then run `grunt create-windows-installer` and you will have an `.nupkg`, a
-`RELEASES` file, and a `.exe` installer file in the `outputDirectory` folder.
+Then run `gulp create-windows-installer` and you will have a `.nupkg`, a `RELEASES` file, and a `.exe` installer file in the `outputDirectory` folder.
 
 There are several configuration settings supported:
 
@@ -45,7 +48,9 @@ There are several configuration settings supported:
 | `authors`             | Yes      | The authors value for the nuget package metadata. Defaults to the `author` field from your app's package.json file when unspecified. |
 | `owners`              | No       | The owners value for the nuget package metadata. Defaults to the `authors` field when unspecified. |
 | `exe`                 | No       | The name of your app's main `.exe` file. This uses the `name` field in your app's package.json file with an added `.exe` extension when unspecified. |
+| `setupExe`            | No       | The name of the final setup .exe file. By default it's `<ProductName>Setup.exe`. |
 | `description`         | No       | The description value for the nuget package metadata. Defaults to the `description` field from your app's package.json file when unspecified. |
+| `iconUrl`             | No       | An URL to a .ico/.png icon for the nuget package metadata. |
 | `version`             | No       | The version value for the nuget package metadata. Defaults to the `version` field from your app's package.json file when unspecified. |
 | `title`               | No       | The title value for the nuget package metadata. Defaults to the `productName` field and then the `name` field from your app's package.json file when unspecified. |
 | `certificateFile`     | No       | The path to an Authenticode Code Signing Certificate |
@@ -62,13 +67,11 @@ Any certificate valid for "Authenticode Code Signing" will work here, but if you
 
 ## Handling Squirrel Events
 
-Squirrel will spawn your app with command line flags on first run, updates,
-and uninstalls. it is **very** important that your app handle these events as _early_
-as possible, and quit **immediately** after handling them. Squirrel will give your
-app a short amount of time (~15sec) to apply these operations and quit.
+Squirrel will spawn your app with command line flags on first run, updates, and uninstalls.
+It is **very** important that your app handle these events as _early_ as possible, and quit **immediately** after handling them.
+Squirrel will give your app a short amount of time (~15sec) to apply these operations and quit.
 
-You should handle these events in your app's `main` entry point with something 
-such as:
+You should handle these events in your app's `main` entry point with something such as:
 
 ```js
 var app = require('app');
@@ -103,7 +106,7 @@ var handleStartupEvent = function() {
 
       return true;
     case '--squirrel-obsolete':
-      // This is called on the outgoing version of your app before 
+      // This is called on the outgoing version of your app before
       // we update to the new version - it's the opposite of
       // --squirrel-updated
       app.quit();
