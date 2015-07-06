@@ -13,7 +13,7 @@ class InstallerFactory
     appMetadata = utils.getPackageJson opts.appDirectory
     @appDirectory = opts.appDirectory
     @outputDirectory = path.resolve(opts.outputDirectory || 'installer')
-    @loadingGif = if opts.loadingGif then path.resolve opts.loadingGif else path.resolve 'resources', 'install-spinner.gif'
+    @loadingGif = if opts.loadingGif then path.resolve opts.loadingGif else path.resolve __dirname, 'resources', 'install-spinner.gif'
     @authors = opts.authors || appMetadata.author || ''
     @owners = opts.owners || @authors
     @name = appMetadata.name
@@ -35,7 +35,7 @@ class InstallerFactory
 
   syncReleases: () =>
     if @remoteReleases
-      cmd = path.resolve 'vendor', 'SyncReleases.exe'
+      cmd = path.resolve __dirname, 'vendor', 'SyncReleases.exe'
       args = ['-u', @remoteReleases, '-r', @outputDirectory]
       utils.exec cmd, args
     else
@@ -43,7 +43,7 @@ class InstallerFactory
 
   packRelease: () =>
     nupkgPath = path.join @nugetOutput, "#{@name}.#{@version}.nupkg"
-    cmd = path.resolve 'vendor', 'Squirrel.exe'
+    cmd = path.resolve __dirname, 'vendor', 'Squirrel.exe'
     args = [
       '--releasify'
       nupkgPath
@@ -77,7 +77,7 @@ class InstallerFactory
     #temp.track()
 
     # Copy Squirrel.exe as Update.exe
-    squirrelExePath = path.resolve 'vendor', 'Squirrel.exe'
+    squirrelExePath = path.resolve __dirname, 'vendor', 'Squirrel.exe'
     updateExePath = path.join @appDirectory, 'Update.exe'
     fs.copySync squirrelExePath, updateExePath
 
@@ -88,7 +88,7 @@ class InstallerFactory
     nuspecContent = utils.getNuSpec @
     fs.writeFileSync targetNuspecPath, nuspecContent
 
-    cmd = path.resolve 'vendor', 'nuget.exe'
+    cmd = path.resolve __dirname, 'vendor', 'nuget.exe'
     args = [
       'pack'
       targetNuspecPath

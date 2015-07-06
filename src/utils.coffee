@@ -37,7 +37,7 @@ module.exports = {
         throw new Error 'Neither the resources/app folder nor the resources/app.asar package were found.'
 
   getNuSpec: (opts) ->
-    template = fs.readFileSync path.resolve 'resources', 'template.nuspec'
+    template = fs.readFileSync path.resolve __dirname, 'resources', 'template.nuspec'
     template = dot.template template.toString()
     template opts
 
