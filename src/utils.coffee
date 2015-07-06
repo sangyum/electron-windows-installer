@@ -10,15 +10,15 @@ dot = require 'dot'
 module.exports = {
 
   exec: (cmd, args, options) ->
-    if process.platform isnt 'win32'
-      args.unshift cmd
-      cmd = 'wine'
-
-      args = args.map (arg) ->
-        if arg[0] is '/'
-          path.win32.normalize arg
-        else
-          arg
+    # if process.platform isnt 'win32'
+    #   args.unshift cmd
+    #   cmd = 'wine'
+    #
+    #   args = args.map (arg) ->
+    #     if arg[0] is '/'
+    #       path.win32.normalize arg
+    #     else
+    #       arg
 
     new Promise (resolve, reject) ->
       cp.execFile cmd, args, options, (error, stdout, stderr) ->

@@ -12,14 +12,14 @@ Build Windows installers for [Electron](https://github.com/atom/electron) apps u
 npm install --save-dev electron-windows-installer
 ```
 
-If you're not on Windows, you'll need `wine`, `winetricks` and `.NET 4`. Quick install on OS X:
+<!-- If you're not on Windows, you'll need `wine`, `winetricks` and `.NET 4`. Quick install on OS X:
 
 ```sh
 brew install wine winetricks
 winetricks dotnet40
 ```
 
-**Note:** I can't get Squirrel to work with `wine`. I created an [issue on the Squirrel.Windows repo](https://github.com/Squirrel/Squirrel.Windows/issues/378).
+**Note:** I can't get Squirrel to work with `wine`. I created an [issue on the Squirrel.Windows repo](https://github.com/Squirrel/Squirrel.Windows/issues/378). -->
 
 ## Usage
 
