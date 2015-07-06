@@ -24,7 +24,7 @@ InstallerFactory = (function() {
     appMetadata = utils.getPackageJson(opts.appDirectory);
     this.appDirectory = opts.appDirectory;
     this.outputDirectory = path.resolve(opts.outputDirectory || 'installer');
-    this.loadingGif = opts.loadingGif ? path.resolve(opts.loadingGif) : path.resolve('resources', 'install-spinner.gif');
+    this.loadingGif = opts.loadingGif ? path.resolve(opts.loadingGif) : path.resolve(__dirname, 'resources', 'install-spinner.gif');
     this.authors = opts.authors || appMetadata.author || '';
     this.owners = opts.owners || this.authors;
     this.name = appMetadata.name;
@@ -48,7 +48,7 @@ InstallerFactory = (function() {
   InstallerFactory.prototype.syncReleases = function() {
     var args, cmd;
     if (this.remoteReleases) {
-      cmd = path.resolve('vendor', 'SyncReleases.exe');
+      cmd = path.resolve(__dirname, 'vendor', 'SyncReleases.exe');
       args = ['-u', this.remoteReleases, '-r', this.outputDirectory];
       return utils.exec(cmd, args);
     } else {
@@ -59,7 +59,7 @@ InstallerFactory = (function() {
   InstallerFactory.prototype.packRelease = function() {
     var args, cmd, nupkgPath;
     nupkgPath = path.join(this.nugetOutput, this.name + "." + this.version + ".nupkg");
-    cmd = path.resolve('vendor', 'Squirrel.exe');
+    cmd = path.resolve(__dirname, 'vendor', 'Squirrel.exe');
     args = ['--releasify', nupkgPath, '--releaseDir', this.outputDirectory, '--loadingGif', this.loadingGif];
     if (this.signWithParams) {
       args.push('--signWithParams');
@@ -85,14 +85,14 @@ InstallerFactory = (function() {
 
   InstallerFactory.prototype.createInstaller = function() {
     var args, cmd, nuspecContent, squirrelExePath, targetNuspecPath, updateExePath;
-    squirrelExePath = path.resolve('vendor', 'Squirrel.exe');
+    squirrelExePath = path.resolve(__dirname, 'vendor', 'Squirrel.exe');
     updateExePath = path.join(this.appDirectory, 'Update.exe');
     fs.copySync(squirrelExePath, updateExePath);
     this.nugetOutput = temp.mkdirSync('squirrel-installer-');
     targetNuspecPath = path.join(this.nugetOutput, this.name + '.nuspec');
     nuspecContent = utils.getNuSpec(this);
     fs.writeFileSync(targetNuspecPath, nuspecContent);
-    cmd = path.resolve('vendor', 'nuget.exe');
+    cmd = path.resolve(__dirname, 'vendor', 'nuget.exe');
     args = ['pack', targetNuspecPath, '-BasePath', path.resolve(this.appDirectory), '-OutputDirectory', this.nugetOutput, '-NoDefaultExcludes'];
     return utils.exec(cmd, args).then(this.syncReleases).then(this.packRelease).then(this.renameSetupFile);
   };
