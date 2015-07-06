@@ -41,7 +41,7 @@ module.exports = {
   },
   getNuSpec: function(opts) {
     var template;
-    template = fs.readFileSync(path.resolve(__dirname, 'resources', 'template.nuspec'));
+    template = fs.readFileSync(path.resolve(__dirname, '..', 'resources', 'template.nuspec'));
     template = dot.template(template.toString());
     return template(opts);
   }
