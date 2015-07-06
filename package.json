@@ -11,8 +11,12 @@
     "windows",
     "installer",
     "squirrel",
-    "gulp",
-    "plugin"
+    "gulpplugin"
+  ],
+  "files": [
+    "dist",
+    "vendor",
+    "resources"
   ],
   "repository": {
     "type": "git",
