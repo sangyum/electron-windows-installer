@@ -15,17 +15,6 @@ dot = require('dot');
 
 module.exports = {
   exec: function(cmd, args, options) {
-    if (process.platform !== 'win32') {
-      args.unshift(cmd);
-      cmd = 'wine';
-      args = args.map(function(arg) {
-        if (arg[0] === '/') {
-          return path.win32.normalize(arg);
-        } else {
-          return arg;
-        }
-      });
-    }
     return new Promise(function(resolve, reject) {
       return cp.execFile(cmd, args, options, function(error, stdout, stderr) {
         if (error) {
