@@ -14,7 +14,7 @@ class InstallerFactory
     @appDirectory = opts.appDirectory
     @outputDirectory = path.resolve(opts.outputDirectory || 'installer')
     @loadingGif = if opts.loadingGif then path.resolve opts.loadingGif else path.resolve __dirname, '..', 'resources', 'install-spinner.gif'
-    @authors = opts.authors || utils.escape appMetadata.author || ''
+    @authors = opts.authors || appMetadata.author && utils.escape appMetadata.author || ''
     @owners = opts.owners || @authors
     @name = appMetadata.name
     @productName = appMetadata.productName || @name
