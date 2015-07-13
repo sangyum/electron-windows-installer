@@ -47,4 +47,4 @@ module.exports =
       .replace />/g, '&gt;'
       .replace /"/g, '&quot;'
       .replace /'/g, '&apos;'
-      .replace /@/g, '&commat;'
+      .replace /@/g, '&#64;'
