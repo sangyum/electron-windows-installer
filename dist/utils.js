@@ -44,5 +44,8 @@ module.exports = {
     template = fs.readFileSync(path.resolve(__dirname, '..', 'resources', 'template.nuspec'));
     template = dot.template(template.toString());
     return template(opts);
+  },
+  escape: function(str) {
+    return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&apos;').replace(/@/g, '&commat;');
   }
 };

@@ -7,7 +7,7 @@ asar = require 'asar'
 path = require 'path'
 dot = require 'dot'
 
-module.exports = {
+module.exports =
 
   exec: (cmd, args, options) ->
     # if process.platform isnt 'win32'
@@ -41,4 +41,10 @@ module.exports = {
     template = dot.template template.toString()
     template opts
 
-}
+  escape: (str) ->
+    str.replace /&/g, '&amp;'
+      .replace /</g, '&lt;'
+      .replace />/g, '&gt;'
+      .replace /"/g, '&quot;'
+      .replace /'/g, '&apos;'
+      .replace /@/g, '&commat;'

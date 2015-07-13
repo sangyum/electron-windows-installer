@@ -14,11 +14,11 @@ class InstallerFactory
     @appDirectory = opts.appDirectory
     @outputDirectory = path.resolve(opts.outputDirectory || 'installer')
     @loadingGif = if opts.loadingGif then path.resolve opts.loadingGif else path.resolve __dirname, '..', 'resources', 'install-spinner.gif'
-    @authors = opts.authors || appMetadata.author || ''
+    @authors = opts.authors || utils.escape appMetadata.author || ''
     @owners = opts.owners || @authors
     @name = appMetadata.name
     @productName = appMetadata.productName || @name
-    @exe = opts.exe || @name + '.exe'
+    @exe = opts.exe || @productName + '.exe'
     @setupExe = opts.setupExe || @productName + 'Setup.exe'
     @iconUrl = opts.iconUrl || ''
     @description = opts.description || appMetadata.description || ''
@@ -28,7 +28,7 @@ class InstallerFactory
     @certificatePassword = opts.certificatePassword
     @signWithParams = opts.signWithParams
     @setupIcon = opts.setupIcon
-    @remoteReleases = opts.remoteReleases
+    @remoteReleases = opts.remoteReleases.replace '.git', ''
 
     unless @authors
       throw new Error 'Authors required: set "authors" in options or "author" in package.json'
@@ -58,7 +58,7 @@ class InstallerFactory
       args.push '\"' + @signWithParams + '\"'
     else if @certificateFile and @certificatePassword
       args.push '--signWithParams'
-      args.push "\"/a /f \"\"#{path.resolve(@certificateFile)}\"\" /p \"\"#{@certificatePassword}\"\"\""
+      args.push "/a\ /f\ #{@certificateFile}\ /p\ #{@certificatePassword}"
 
     if @setupIcon
       args.push '--setupIcon'
@@ -74,7 +74,7 @@ class InstallerFactory
 
   createInstaller: () ->
     # Start tracking temp dirs to be cleaned
-    #temp.track()
+    temp.track()
 
     # Copy Squirrel.exe as Update.exe
     squirrelExePath = path.resolve __dirname, '..', 'vendor', 'Squirrel.exe'
@@ -84,9 +84,7 @@ class InstallerFactory
     # Generate nuget
     @nugetOutput = temp.mkdirSync 'squirrel-installer-'
     targetNuspecPath = path.join @nugetOutput, @name + '.nuspec'
-
-    nuspecContent = utils.getNuSpec @
-    fs.writeFileSync targetNuspecPath, nuspecContent
+    fs.writeFileSync targetNuspecPath, utils.getNuSpec @
 
     cmd = path.resolve __dirname, '..', 'vendor', 'nuget.exe'
     args = [

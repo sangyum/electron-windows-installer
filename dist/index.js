@@ -25,11 +25,11 @@ InstallerFactory = (function() {
     this.appDirectory = opts.appDirectory;
     this.outputDirectory = path.resolve(opts.outputDirectory || 'installer');
     this.loadingGif = opts.loadingGif ? path.resolve(opts.loadingGif) : path.resolve(__dirname, '..', 'resources', 'install-spinner.gif');
-    this.authors = opts.authors || appMetadata.author || '';
+    this.authors = opts.authors || utils.escape(appMetadata.author || '');
     this.owners = opts.owners || this.authors;
     this.name = appMetadata.name;
     this.productName = appMetadata.productName || this.name;
-    this.exe = opts.exe || this.name + '.exe';
+    this.exe = opts.exe || this.productName + '.exe';
     this.setupExe = opts.setupExe || this.productName + 'Setup.exe';
     this.iconUrl = opts.iconUrl || '';
     this.description = opts.description || appMetadata.description || '';
@@ -39,7 +39,7 @@ InstallerFactory = (function() {
     this.certificatePassword = opts.certificatePassword;
     this.signWithParams = opts.signWithParams;
     this.setupIcon = opts.setupIcon;
-    this.remoteReleases = opts.remoteReleases;
+    this.remoteReleases = opts.remoteReleases.replace('.git', '');
     if (!this.authors) {
       throw new Error('Authors required: set "authors" in options or "author" in package.json');
     }
@@ -66,7 +66,7 @@ InstallerFactory = (function() {
       args.push('\"' + this.signWithParams + '\"');
     } else if (this.certificateFile && this.certificatePassword) {
       args.push('--signWithParams');
-      args.push("\"/a /f \"\"" + (path.resolve(this.certificateFile)) + "\"\" /p \"\"" + this.certificatePassword + "\"\"\"");
+      args.push("/a\ /f\ " + this.certificateFile + "\ /p\ " + this.certificatePassword);
     }
     if (this.setupIcon) {
       args.push('--setupIcon');
@@ -84,14 +84,14 @@ InstallerFactory = (function() {
   };
 
   InstallerFactory.prototype.createInstaller = function() {
-    var args, cmd, nuspecContent, squirrelExePath, targetNuspecPath, updateExePath;
+    var args, cmd, squirrelExePath, targetNuspecPath, updateExePath;
+    temp.track();
     squirrelExePath = path.resolve(__dirname, '..', 'vendor', 'Squirrel.exe');
     updateExePath = path.join(this.appDirectory, 'Update.exe');
     fs.copySync(squirrelExePath, updateExePath);
     this.nugetOutput = temp.mkdirSync('squirrel-installer-');
     targetNuspecPath = path.join(this.nugetOutput, this.name + '.nuspec');
-    nuspecContent = utils.getNuSpec(this);
-    fs.writeFileSync(targetNuspecPath, nuspecContent);
+    fs.writeFileSync(targetNuspecPath, utils.getNuSpec(this));
     cmd = path.resolve(__dirname, '..', 'vendor', 'nuget.exe');
     args = ['pack', targetNuspecPath, '-BasePath', path.resolve(this.appDirectory), '-OutputDirectory', this.nugetOutput, '-NoDefaultExcludes'];
     return utils.exec(cmd, args).then(this.syncReleases).then(this.packRelease).then(this.renameSetupFile);
