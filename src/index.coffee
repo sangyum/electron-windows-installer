@@ -28,7 +28,7 @@ class InstallerFactory
     @certificatePassword = opts.certificatePassword
     @signWithParams = opts.signWithParams
     @setupIcon = opts.setupIcon
-    @remoteReleases = opts.remoteReleases.replace '.git', ''
+    @remoteReleases = opts.remoteReleases && opts.remoteReleases.replace('.git', '')
 
     unless @authors
       throw new Error 'Authors required: set "authors" in options or "author" in package.json'

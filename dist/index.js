@@ -39,7 +39,7 @@ InstallerFactory = (function() {
     this.certificatePassword = opts.certificatePassword;
     this.signWithParams = opts.signWithParams;
     this.setupIcon = opts.setupIcon;
-    this.remoteReleases = opts.remoteReleases.replace('.git', '');
+    this.remoteReleases = opts.remoteReleases && opts.remoteReleases.replace('.git', '');
     if (!this.authors) {
       throw new Error('Authors required: set "authors" in options or "author" in package.json');
     }
