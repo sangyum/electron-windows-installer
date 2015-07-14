@@ -76,11 +76,6 @@ class InstallerFactory
     # Start tracking temp dirs to be cleaned
     temp.track()
 
-    # Copy Squirrel.exe as Update.exe
-    squirrelExePath = path.resolve __dirname, '..', 'vendor', 'Squirrel.exe'
-    updateExePath = path.join @appDirectory, 'Update.exe'
-    fs.copySync squirrelExePath, updateExePath
-
     # Generate nuget
     @nugetOutput = temp.mkdirSync 'squirrel-installer-'
     targetNuspecPath = path.join @nugetOutput, @name + '.nuspec'

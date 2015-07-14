@@ -84,11 +84,8 @@ InstallerFactory = (function() {
   };
 
   InstallerFactory.prototype.createInstaller = function() {
-    var args, cmd, squirrelExePath, targetNuspecPath, updateExePath;
+    var args, cmd, targetNuspecPath;
     temp.track();
-    squirrelExePath = path.resolve(__dirname, '..', 'vendor', 'Squirrel.exe');
-    updateExePath = path.join(this.appDirectory, 'Update.exe');
-    fs.copySync(squirrelExePath, updateExePath);
     this.nugetOutput = temp.mkdirSync('squirrel-installer-');
     targetNuspecPath = path.join(this.nugetOutput, this.name + '.nuspec');
     fs.writeFileSync(targetNuspecPath, utils.getNuSpec(this));
