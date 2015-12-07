@@ -60,7 +60,7 @@ InstallerFactory = (function() {
     var args, cmd, nupkgPath;
     nupkgPath = path.join(this.nugetOutput, this.name + "." + this.version + ".nupkg");
     cmd = path.resolve(__dirname, '..', 'vendor', 'Squirrel.exe');
-    args = ['--releasify', nupkgPath, '--releaseDir', this.outputDirectory, '--loadingGif', this.loadingGif];
+    args = ['--releasify', nupkgPath, '--releaseDir', this.outputDirectory, '--loadingGif', this.loadingGif, '--no-msi'];
     if (this.signWithParams) {
       args.push('--signWithParams');
       args.push('\"' + this.signWithParams + '\"');
